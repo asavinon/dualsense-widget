@@ -1,0 +1,125 @@
+DUALSENSE WIDGET 1.5 — Windows x64
+
+START
+Double-click DualSenseWidget.exe. No installation, administrator rights,
+separate .NET installation, or third-party controller driver is required.
+Keep the EXE wherever you like. Its first launch may take a few seconds
+while the bundled .NET runtime extracts into your Windows temporary folder.
+
+USE
+* Connect a Sony DualSense by USB, or pair it through Windows Bluetooth.
+* Drag the DUALSENSE header to move the widget around your desktop.
+* Click the small rectangle in the header to switch to a compact battery view.
+* Choose a color preset, adjust RGB sliders, or enter a six-digit hex color.
+* The radial picker beneath the color preview selects hue around the circle
+  and saturation from center to edge. Click or drag its selection marker.
+  The Value slider sets color lightness, including black. RGB, hex and the
+  wheel stay synchronized. With the wheel focused, left/right arrow keys
+  adjust hue and up/down adjust saturation. Scroll for the lower controls;
+  Apply and Release remain visible. Dragging the wheel, using its arrow keys,
+  or moving Value updates the connected controller immediately, without Apply.
+  Manual picker input selects Static so the chosen color appears directly.
+  Updates are paced at 20 per second and keep the final selected color.
+* The slider beside the hex color adjusts light-bar brightness.
+* Toggle buttons 1–5 to choose the five white player indicator lights.
+* Click Apply to controller to send the LED settings.
+* Choose Static, Rainbow, Breathe, Player chase or Battery reactive from
+  the effect menu. The widget previews the effect before you apply it.
+* Speed changes the cycle speed from 0.25x to 3x. Brightness limits the
+  light-bar intensity for all modes. Rainbow supplies its own colors;
+  Breathe uses the selected color; Player chase sweeps all five player LEDs.
+* Battery reactive pulses amber while charging, turns green at full charge,
+  and shows a red-to-green charge color on battery, pulsing when low.
+  When fresh battery information is unavailable it uses the selected color.
+* Press Apply to start the chosen effect on the controller. Further changes
+  in effect settings are previewed until you press Apply again. Using the
+  radial picker takes live manual control. Stop effect returns to the
+  selected solid color. Release LEDs stops all animation writes.
+* Effects run while the app is open, including in compact view or the tray.
+  Closing the app stops animation at its last frame. Use Release LEDs first
+  to return lighting to firmware control. Reconnect resumes a saved effect
+  only if Apply on reconnect is enabled.
+* Release LEDs returns LED control to the controller firmware.
+* Always on top keeps the widget above other windows.
+* Click the diamond-shaped Appearance button in the header to choose Glass,
+  Translucent or Dark. This works in both full and compact views.
+* Glass adds a tinted see-through surface with reflective highlights.
+  Translucent uses a simpler tint; Dark restores solid surfaces.
+* Surface opacity adjusts the see-through themes from 40% to 100%.
+  Text and controls stay opaque. Theme and opacity are saved automatically.
+  Glass is a styled translucent surface; it does not blur the desktop.
+* Apply on reconnect automatically sends saved lighting when it reconnects.
+  This option starts OFF. With it off, opening the app does not change LEDs.
+* The minus button hides the app to its tray icon. Double-click that icon
+  to show it, or right-click it for Show widget / Exit. X exits completely.
+
+SAVED SETTINGS
+Position, compact mode, pin, effect, speed, lighting, theme and opacity save in:
+%LOCALAPPDATA%\DualSenseWidget\settings.json
+There is no startup registration or background service.
+
+BATTERY ACCURACY
+DualSense reports battery charge in 10% bands, not a precise 1% measurement.
+The app displays the midpoint: 0–9% appears as 5%, 10–19% as 15%, etc.
+Full charge appears as 100%. Charging errors appear as unavailable instead
+of an invented percentage. Bluetooth reports are CRC checked.
+
+LIVE CHARGING
+Battery and charging state are read continuously from the controller.
+The display refreshes every 250 milliseconds. The green LIVE indicator
+shows that fresh reports are arriving; it pulses while charging.
+Charging observed shows the elapsed session time since the app detected
+charging, plus the estimated percentage gained during that session.
+The timer starts over on a new connection or a new charging session.
+Hover over LIVE to see the last report time and last charge-state change.
+Reports older than three seconds are marked STALE and the battery display
+is dimmed. The timer then stops displaying an active charging duration.
+The app reconnects automatically if controller reports stop completely.
+Current in amps, charger wattage and reliable time-to-full are not included
+because these reports do not provide those measurements.
+
+COMPATIBILITY / TROUBLESHOOTING
+Supports Sony DualSense (054C:0CE6) and DualSense Edge (054C:0DF2) HID reports
+over USB and Bluetooth. One controller is used at a time; USB is preferred.
+DualSense Edge support is implemented but was not tested with an Edge here.
+Third-party PS5-compatible controllers may use different reports.
+
+If the controller is missing, check its Windows connection and try a USB
+data cable. HidHide may need to allow this executable. DS4Windows, Steam,
+or a game can hide the physical controller or overwrite its lighting.
+If LEDs revert, stop lighting control in the competing app and press Apply.
+The app automatically retries connections. No input remapping is performed.
+
+VALIDATION
+Live Bluetooth battery reading and LED write access verified on the connected
+DualSense. Ninety-six protocol, charging and lighting checks passed, including
+USB/Bluetooth framing, CRC, charge states, brightness, LED-only flags,
+LED release, live report freshness and charging-session transitions.
+The animation writer was tested with a recording stream for both USB and
+Bluetooth, including changing colors, 20 fps rate limits, sequence numbers,
+CRC, Stop, Release and cancellation. The preview was verified to animate
+without sending LED commands during smoke checks. Rapid picker updates were
+checked for pacing and delivery of the final color. Dynamic effects use only LED enable flags.
+Full and compact UI rendering, live report advancement, stale-state display,
+color entry and layout were checked.
+Physical LED color changes can be visually confirmed by dragging the picker.
+
+SOURCE / BUILD
+The GitHub repository and source archive contain the C# WPF source and
+dependency-free protocol checks. Install the .NET 10 SDK to build:
+
+dotnet publish DualSenseWidget/DualSenseWidget.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish
+
+dotnet run --project ProtocolTests/ProtocolTests.csproj -c Release
+
+To read the connected controller without changing LEDs:
+dotnet run --project ProtocolTests/ProtocolTests.csproj -c Release -- --probe
+
+PROTOCOL REFERENCES
+Sony-authored upstream Linux HID driver (wire format and battery bands):
+https://github.com/torvalds/linux/blob/master/drivers/hid/hid-playstation.c
+Microsoft HID report API documentation:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/obtaining-hid-reports
+
+This independent app is not affiliated with or endorsed by Sony.
+
