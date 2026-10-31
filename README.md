@@ -1,12 +1,14 @@
-# DualSense Widget
+# Controller Lights and Battery
 
 A movable Windows desktop widget for DualSense battery status, charging information, and controller lighting.
 
-![DualSense Widget preview](docs/preview.png)
+Previously called DualSense Widget. Version 1.5.2 uses the new name throughout the interface and download. Existing saved preferences are preserved.
+
+![Controller Lights and Battery preview](docs/preview.png)
 
 ## Download
 
-Get **DualSenseWidget-v1.5.0-win-x64.zip** from [Releases](https://github.com/asavinon/dualsense-widget/releases/latest), extract it, and run `DualSenseWidget.exe`.
+Get **ControllerLightsAndBattery-v1.5.2-win-x64.zip** from [Releases](https://github.com/asavinon/dualsense-widget/releases/latest), extract it, and run `ControllerLightsAndBattery.exe`.
 
 Windows x64 is required. The .NET runtime is included; no separate runtime installation or administrator rights are needed. This release is unsigned.
 
@@ -41,7 +43,7 @@ dotnet run --project ProtocolTests/ProtocolTests.csproj -c Release
 dotnet publish DualSenseWidget/DualSenseWidget.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish
 ```
 
-The dependency-free check runner covers protocol framing, CRC, charge states, charging sessions, LED flags, animation timing, and coalesced live color updates. Version 1.5.0 passed 96 checks.
+The dependency-free check runner covers protocol framing, CRC, charge states, charging sessions, LED flags, animation timing, and coalesced live color updates. Version 1.5.2 passed 96 checks.
 
 To inspect a connected controller without changing its LEDs:
 

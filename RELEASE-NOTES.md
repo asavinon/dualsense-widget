@@ -1,26 +1,19 @@
-# DualSense Widget v1.5.0
+# Controller Lights and Battery v1.5.2
 
-First public release: a portable Windows x64 desktop widget for DualSense battery, charging status, and lighting.
+DualSense Widget is now **Controller Lights and Battery**. The app title, header, tray tooltip, executable, documentation, and preview use the new name. This release also includes the per-monitor DPI awareness added for the Microsoft Store build.
 
-## Included
-
-- Movable full and compact views, tray support, and always-on-top mode.
-- Estimated battery percentage and real-time charging state, observed duration, and charge gain.
-- Glass, translucent, and dark themes with adjustable opacity.
-- Radial color picker that updates controller LEDs live while dragging, with output paced at 20 updates per second.
-- RGB/hex controls, brightness, individual player LEDs, and five lighting modes.
-- USB/Bluetooth support, reconnect handling, and saved preferences.
+Battery readings, charging information, live color picking, lighting effects, glass/translucent themes, and saved preferences continue to work as before. The settings location is unchanged, so existing preferences are preserved.
 
 ## Download and run
 
-Download **DualSenseWidget-v1.5.0-win-x64.zip**, extract it, and open **DualSenseWidget.exe**. The .NET runtime is included. Windows x64 is required. The executable is unsigned.
+Download **ControllerLightsAndBattery-v1.5.2-win-x64.zip**, extract it, and open **ControllerLightsAndBattery.exe**. Close the previous version before starting the new one. The .NET runtime is included; Windows x64 is required. The portable executable is unsigned.
 
-**SHA256SUMS.txt** contains hashes for the Windows package and the optional source archive.
+**SHA256SUMS.txt** includes hashes for the Windows package and optional source archive.
 
-## Validation and known limits
+## Validation and limits
 
-96 protocol, charging, and lighting checks passed. UI rendering and live Bluetooth battery/report handling were checked. LED write access was verified; broader physical lighting and USB hardware testing is still needed. DualSense Edge support is implemented but untested on hardware.
+96 protocol, charging, and lighting checks passed. UI smoke checks and live Bluetooth battery reports were verified. Battery percentages remain coarse estimates; charging current, wattage, and time remaining are not available. DualSense Edge support is implemented but has not been hardware-tested. Other controller software may overwrite lighting or prevent access.
 
-Battery percentage reflects the controller's coarse charge bands. Charging current, wattage, and time-to-full are not available. Glass provides transparency without desktop blur. Other controller software may overwrite lighting or prevent access.
+The Microsoft Store version has been submitted for certification under the same name; it is not yet approved.
 
-Source is available under the MIT license. Bundled runtime licenses and notices are included in the Windows package.
+Source remains public under the MIT license. Bundled runtime licenses and notices are included. This independent project is not affiliated with or endorsed by Sony.
