@@ -6,8 +6,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <AssemblyName>DualSenseWidget</AssemblyName>
-    <Version>1.5.0</Version>
+    <AssemblyName>ControllerLightsAndBattery</AssemblyName>
+    <Version>1.5.2</Version>
+    <Product>Controller Lights and Battery</Product>
+    <Title>Controller Lights and Battery</Title>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Widget.ico</ApplicationIcon>
   </PropertyGroup>

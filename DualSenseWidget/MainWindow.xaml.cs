@@ -315,7 +315,7 @@ public partial class MainWindow : Window
         menu.Items.Add("Exit", null, (_, _) => Dispatcher.Invoke(Close));
         using (var iconResource = Application.GetResourceStream(new Uri("pack://application:,,,/Widget.ico")).Stream)
             trayIcon = new System.Drawing.Icon(iconResource);
-        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "DualSense Widget", Visible = true, ContextMenuStrip = menu };
+        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "Controller Lights and Battery", Visible = true, ContextMenuStrip = menu };
         tray.DoubleClick += (_, _) => Dispatcher.Invoke(ShowWidget);
     }
     private void ShowWidget() { Show(); WindowState = WindowState.Normal; Activate(); }
