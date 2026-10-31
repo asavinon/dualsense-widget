@@ -1,0 +1,144 @@
+<Window x:Class="DualSenseWidget.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:DualSenseWidget"
+        Title="DualSense Widget" Icon="Widget.ico" Width="392" Height="778" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent"
+        FontFamily="Segoe UI" FontSize="12" Foreground="{StaticResource Ink}" Loaded="OnLoaded" Closing="OnClosing">
+  <Grid>
+  <Border x:Name="ShellFrame" CornerRadius="20" Background="{DynamicResource ShellBackground}" BorderBrush="{DynamicResource ShellBorder}" BorderThickness="1"/>
+  <Border CornerRadius="20" Background="{DynamicResource GlassHighlight}" IsHitTestVisible="False" Margin="1"/>
+  <Border Padding="21,13,21,17" Background="Transparent">
+    <Grid>
+      <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="226"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+      <Grid MouseLeftButtonDown="DragHeader" Background="Transparent" ToolTip="Drag here to move the widget">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock Text="●" Foreground="#5FBFFF" FontSize="14" Margin="0,0,8,0"/>
+          <TextBlock Text="DUALSENSE" FontWeight="Bold" FontSize="12" VerticalAlignment="Center"/>
+          <TextBlock Text=" / WIDGET" Foreground="#76869E" FontSize="10" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button x:Name="ThemeButton" Content="◈" ToolTip="Appearance: glass, translucency and opacity" AutomationProperties.Name="Appearance" Padding="8,4" Background="Transparent" Click="OpenAppearance"/>
+          <Button x:Name="CompactButton" Content="▱" ToolTip="Toggle compact view" AutomationProperties.Name="Toggle compact view" Padding="8,4" Background="Transparent" Click="ToggleCompact"/>
+          <Button Content="−" ToolTip="Hide to system tray" AutomationProperties.Name="Hide to system tray" Padding="8,4" Background="Transparent" Click="HideToTray"/>
+          <Button Content="×" ToolTip="Close widget" AutomationProperties.Name="Close widget" Padding="8,4" Background="Transparent" Click="CloseWindow"/>
+        </StackPanel>
+        <Popup x:Name="AppearancePopup" PlacementTarget="{Binding ElementName=ThemeButton}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+          <Border Width="290" Background="{DynamicResource PopupSurface}" BorderBrush="{DynamicResource ControlBorder}" BorderThickness="1" CornerRadius="12" Padding="15" Margin="0,8,0,0">
+            <StackPanel>
+              <Grid Margin="0,0,0,12"><TextBlock Text="APPEARANCE" FontSize="10" Foreground="#B8CBE2" FontWeight="SemiBold"/><Button Content="×" HorizontalAlignment="Right" Padding="5,0" Background="Transparent" Click="CloseAppearance" AutomationProperties.Name="Close appearance"/></Grid>
+              <ComboBox x:Name="ThemeChoice" SelectedIndex="0" SelectionChanged="ThemeChanged" AutomationProperties.Name="Widget theme">
+                <ComboBoxItem Content="Glass"/><ComboBoxItem Content="Translucent"/><ComboBoxItem Content="Dark"/>
+              </ComboBox>
+              <Grid Margin="0,12,0,4"><TextBlock Text="Surface opacity" FontSize="11"/><TextBlock x:Name="PanelOpacityText" Text="76%" HorizontalAlignment="Right" Foreground="#AFCAE6" FontSize="11"/></Grid>
+              <Slider x:Name="PanelOpacity" Minimum="40" Maximum="100" Value="76" ValueChanged="PanelOpacityChanged" AutomationProperties.Name="Surface opacity"/>
+              <TextBlock x:Name="ThemeHint" Text="Tinted glass with soft reflective highlights." Foreground="#8FA4C0" FontSize="10" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            </StackPanel>
+          </Border>
+        </Popup>
+      </Grid>
+      <Border Grid.Row="1" CornerRadius="14" Padding="16,13" Margin="0,4,0,12" BorderBrush="{DynamicResource HeroBorder}" Background="{DynamicResource HeroBackground}" BorderThickness="1">
+        <Grid>
+          <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+          <TextBlock x:Name="ControllerName" Text="DualSense" FontWeight="SemiBold" FontSize="14"/>
+          <TextBlock x:Name="ConnectionText" Text="SEARCHING" HorizontalAlignment="Right" FontSize="9" Foreground="#8FCFFF" VerticalAlignment="Center"/>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock x:Name="BatteryValue" Text="—" FontSize="54" FontWeight="Light"/>
+            <TextBlock x:Name="PercentSign" Text="%" FontSize="23" Foreground="#98AFCB" Margin="4,24,0,0"/>
+          </StackPanel>
+          <Viewbox Grid.Row="1" Width="120" Height="76" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,0,0" IsHitTestVisible="False">
+            <Canvas Width="160" Height="96">
+              <Path Fill="#CEDAEA" Stroke="#F0F6FF" StrokeThickness="1.5" Data="M 43,17 C 32,17 25,24 20,36 L 5,74 C 0,94 17,98 28,83 L 46,64 L 114,64 L 132,83 C 143,98 160,94 155,74 L 140,36 C 135,24 128,17 117,17 Z"/>
+              <Path Fill="#36465E" Data="M 49,22 L 111,22 L 105,49 L 55,49 Z"/>
+              <Path x:Name="ControllerGlow" Stroke="#48AFFF" StrokeThickness="4" StrokeLineJoin="Round" Data="M 45,25 L 52,51 L 108,51 L 115,25"/>
+              <Ellipse x:Name="PreviewPlayer1" Width="3" Height="3" Canvas.Left="71" Canvas.Top="55" Fill="#E9F5FF"/>
+              <Ellipse x:Name="PreviewPlayer2" Width="3" Height="3" Canvas.Left="75" Canvas.Top="55" Fill="#E9F5FF"/>
+              <Ellipse x:Name="PreviewPlayer3" Width="3" Height="3" Canvas.Left="79" Canvas.Top="55" Fill="#E9F5FF"/>
+              <Ellipse x:Name="PreviewPlayer4" Width="3" Height="3" Canvas.Left="83" Canvas.Top="55" Fill="#E9F5FF"/>
+              <Ellipse x:Name="PreviewPlayer5" Width="3" Height="3" Canvas.Left="87" Canvas.Top="55" Fill="#E9F5FF"/>
+              <Ellipse Fill="#26354B" Width="21" Height="21" Canvas.Left="49" Canvas.Top="55"/><Ellipse Fill="#26354B" Width="21" Height="21" Canvas.Left="90" Canvas.Top="55"/>
+              <Path Fill="#26354B" Data="M 26,34 L 33,34 L 33,42 L 41,42 L 41,49 L 33,49 L 33,57 L 26,57 L 26,49 L 18,49 L 18,42 L 26,42 Z"/>
+              <Ellipse Fill="#5A6F8A" Width="8" Height="8" Canvas.Left="126" Canvas.Top="32"/><Ellipse Fill="#5A6F8A" Width="8" Height="8" Canvas.Left="137" Canvas.Top="43"/><Ellipse Fill="#5A6F8A" Width="8" Height="8" Canvas.Left="115" Canvas.Top="43"/><Ellipse Fill="#5A6F8A" Width="8" Height="8" Canvas.Left="126" Canvas.Top="54"/>
+            </Canvas>
+          </Viewbox>
+          <ProgressBar x:Name="BatteryBar" Grid.Row="2" Height="5" Minimum="0" Maximum="100" Value="0" Foreground="#6DCEEC" Background="#35465F" BorderThickness="0" Margin="0,0,0,9"/>
+          <TextBlock x:Name="BatteryCaption" Grid.Row="3" Text="Waiting for controller" Foreground="#B7C9DE" FontSize="11"/>
+          <TextBlock x:Name="ChargeSessionText" Grid.Row="4" Text="Charging session starts when detected" Foreground="#9FB2CE" FontSize="10" Margin="0,7,0,0" ToolTip="Elapsed charging time observed since this app detected charging; charge gained uses the controller's estimated battery bands."/>
+          <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,6,0,0">
+            <TextBlock x:Name="LiveDot" Text="●" Foreground="#6ADDB0" FontSize="9" Margin="0,0,6,0"/>
+            <TextBlock x:Name="LiveReportText" Text="Waiting for live report" Foreground="#8CA3C2" FontSize="10"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+      <Grid x:Name="ExpandedContent" Grid.Row="2">
+        <Grid.RowDefinitions><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <ScrollViewer x:Name="ControlsScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" Padding="0,0,4,0">
+        <StackPanel x:Name="LightingControls">
+        <Grid Margin="0,2,0,10"><TextBlock Text="LIGHT BAR" Foreground="#92A2B9" FontWeight="SemiBold" FontSize="10"/><TextBlock x:Name="EffectPreviewLabel" Text="Static preview" HorizontalAlignment="Right" Foreground="#75869F" FontSize="10"/></Grid>
+        <Border x:Name="ColorPreview" CornerRadius="7" Height="10" Background="#48AFFF" Margin="0,0,0,8"/>
+        <Grid Margin="0,0,0,10">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="172"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <local:RadialColorPicker x:Name="ColorWheel" Width="164" Height="164" ColorPicked="WheelColorPicked" AutomationProperties.Name="Radial color picker" ToolTip="Drag to choose hue and saturation. Arrow keys change hue and saturation."/>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+            <TextBlock Text="COLOR WHEEL" FontSize="10" Foreground="#B8CBE2"/>
+            <TextBlock Text="Drag for live LEDs" FontSize="10" Foreground="#8FA4C0" Margin="0,7,0,12"/>
+            <TextBlock Text="Value" FontSize="11"/>
+            <Slider x:Name="WheelValue" Maximum="100" Value="100" ValueChanged="WheelValueChanged" AutomationProperties.Name="Color value"/>
+            <TextBlock Text="Live color uses Static.&#x0a;No Apply needed." FontSize="10" Foreground="#8FA4C0" Margin="0,7,0,0"/>
+          </StackPanel>
+        </Grid>
+        <Grid Margin="0,0,0,4"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="9"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
+          <ComboBox x:Name="EffectChoice" SelectedIndex="0" SelectionChanged="EffectChanged" AutomationProperties.Name="Lighting effect">
+            <ComboBoxItem Content="Static"/><ComboBoxItem Content="Rainbow"/><ComboBoxItem Content="Breathe"/><ComboBoxItem Content="Player chase"/><ComboBoxItem Content="Battery reactive"/>
+          </ComboBox>
+          <Button x:Name="StopEffectButton" Grid.Column="2" Content="Stop effect" Click="StopEffectClick" ToolTip="Stop the animation and apply the selected solid color"/>
+        </Grid>
+        <Grid Margin="0,0,0,2"><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition/><ColumnDefinition Width="38"/></Grid.ColumnDefinitions>
+          <TextBlock Text="Speed" Foreground="#92A2B9" VerticalAlignment="Center" FontSize="11"/>
+          <Slider x:Name="EffectSpeed" Grid.Column="1" Minimum="0.25" Maximum="3" TickFrequency="0.05" Value="1" ValueChanged="EffectSpeedChanged" AutomationProperties.Name="Animation speed"/>
+          <TextBlock x:Name="SpeedValue" Grid.Column="2" Text="1.0×" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11"/>
+        </Grid>
+        <TextBlock x:Name="EffectHint" Text="Effects start with Apply. Stop returns to a solid color." Foreground="#8193AE" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,6"/>
+        <UniformGrid Columns="7" Margin="0,0,0,8">
+          <Button Background="#48AFFF" Tag="#48AFFF" ToolTip="Ice blue" AutomationProperties.Name="Ice blue" Height="25" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#9C78FF" Tag="#9C78FF" ToolTip="Violet" AutomationProperties.Name="Violet" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#FF609D" Tag="#FF609D" ToolTip="Pink" AutomationProperties.Name="Pink" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#FF765C" Tag="#FF765C" ToolTip="Coral" AutomationProperties.Name="Coral" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#FFD26F" Tag="#FFD26F" ToolTip="Amber" AutomationProperties.Name="Amber" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#6ADDB0" Tag="#6ADDB0" ToolTip="Mint" AutomationProperties.Name="Mint" Margin="0,0,8,0" Click="PresetClick"/>
+          <Button Background="#E8F3FF" Tag="#E8F3FF" ToolTip="White" AutomationProperties.Name="White" Click="PresetClick"/>
+        </UniformGrid>
+        <Grid>
+          <Grid.ColumnDefinitions><ColumnDefinition Width="23"/><ColumnDefinition/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+          <Grid.RowDefinitions><RowDefinition Height="26"/><RowDefinition Height="26"/><RowDefinition Height="26"/></Grid.RowDefinitions>
+          <TextBlock Text="R" Foreground="#FD939E" VerticalAlignment="Center"/><Slider x:Name="Red" Grid.Column="1" Value="72" ValueChanged="ColorChanged" AutomationProperties.Name="Red"/><TextBlock x:Name="RedValue" Grid.Column="2" Text="72" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+          <TextBlock Grid.Row="1" Text="G" Foreground="#88DCB7" VerticalAlignment="Center"/><Slider x:Name="Green" Grid.Row="1" Grid.Column="1" Value="175" ValueChanged="ColorChanged" AutomationProperties.Name="Green"/><TextBlock x:Name="GreenValue" Grid.Row="1" Grid.Column="2" Text="175" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+          <TextBlock Grid.Row="2" Text="B" Foreground="#8ABFFF" VerticalAlignment="Center"/><Slider x:Name="Blue" Grid.Row="2" Grid.Column="1" Value="255" ValueChanged="ColorChanged" AutomationProperties.Name="Blue"/><TextBlock x:Name="BlueValue" Grid.Row="2" Grid.Column="2" Text="255" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Margin="0,4,0,8">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="110"/><ColumnDefinition/><ColumnDefinition Width="38"/></Grid.ColumnDefinitions>
+          <TextBox x:Name="HexInput" Text="#48AFFF" Background="{DynamicResource ControlSurface}" Foreground="#DCE8F7" BorderBrush="{DynamicResource ControlBorder}" Padding="8,5" MaxLength="7" LostFocus="HexLostFocus" KeyDown="HexKeyDown" AutomationProperties.Name="Hex color" ToolTip="Enter a hex color such as #48AFFF"/>
+          <Slider x:Name="Brightness" Grid.Column="1" Maximum="100" Value="70" Margin="14,0,3,0" ValueChanged="ColorChanged" AutomationProperties.Name="Light bar brightness" ToolTip="Light bar brightness"/>
+          <TextBlock x:Name="BrightnessValue" Grid.Column="2" Text="70%" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10"/>
+        </Grid>
+        <TextBlock Text="PLAYER LIGHTS · toggle each position" FontSize="10" Foreground="#92A2B9" Margin="0,2,0,6"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
+          <ToggleButton x:Name="Player1" Content="1" Style="{StaticResource PlayerLight}" Click="PlayerChanged" AutomationProperties.Name="Player light 1"/>
+          <ToggleButton x:Name="Player2" Content="2" Style="{StaticResource PlayerLight}" Click="PlayerChanged" AutomationProperties.Name="Player light 2"/>
+          <ToggleButton x:Name="Player3" Content="3" Style="{StaticResource PlayerLight}" IsChecked="True" Click="PlayerChanged" AutomationProperties.Name="Player light 3"/>
+          <ToggleButton x:Name="Player4" Content="4" Style="{StaticResource PlayerLight}" Click="PlayerChanged" AutomationProperties.Name="Player light 4"/>
+          <ToggleButton x:Name="Player5" Content="5" Style="{StaticResource PlayerLight}" Click="PlayerChanged" AutomationProperties.Name="Player light 5"/>
+        </StackPanel>
+        </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="1">
+        <Grid Margin="0,0,0,13"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="10"/><ColumnDefinition Width="110"/></Grid.ColumnDefinitions>
+          <Button x:Name="ApplyButton" Content="Apply to controller" Background="#5BAFFF" Foreground="#09192D" FontWeight="SemiBold" Click="ApplyClick"/>
+          <Button x:Name="ReleaseButton" Grid.Column="2" Content="Release LEDs" Click="ReleaseClick" ToolTip="Return LED control to the controller firmware"/>
+        </Grid>
+        <Grid Margin="0,0,0,11"><CheckBox x:Name="PinOption" Content="Always on top" IsChecked="True" Click="OptionChanged"/><CheckBox x:Name="RestoreOption" Content="Apply on reconnect" HorizontalAlignment="Right" Click="OptionChanged"/></Grid>
+        <Border Height="1" Background="{DynamicResource RuleSurface}" Margin="0,0,0,10"/>
+        <TextBlock x:Name="StatusText" Text="Looking for your controller…" TextWrapping="Wrap" FontSize="11" Foreground="#A4B2C7" MinHeight="31"/>
+        <TextBlock Text="Drag the header to move · settings saved automatically" FontSize="10" Foreground="#6F8099" Margin="0,8,0,0"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+  </Grid>
+</Window>
