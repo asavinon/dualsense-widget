@@ -1,14 +1,14 @@
-DUALSENSE WIDGET 1.5 — Windows x64
+CONTROLLER LIGHTS AND BATTERY 1.5.2 — Windows x64
 
 START
-Double-click DualSenseWidget.exe. No installation, administrator rights,
+Double-click ControllerLightsAndBattery.exe. No installation, administrator rights,
 separate .NET installation, or third-party controller driver is required.
 Keep the EXE wherever you like. Its first launch may take a few seconds
 while the bundled .NET runtime extracts into your Windows temporary folder.
 
 USE
 * Connect a Sony DualSense by USB, or pair it through Windows Bluetooth.
-* Drag the DUALSENSE header to move the widget around your desktop.
+* Drag the CONTROLLER header to move the widget around your desktop.
 * Click the small rectangle in the header to switch to a compact battery view.
 * Choose a color preset, adjust RGB sliders, or enter a six-digit hex color.
 * The radial picker beneath the color preview selects hue around the circle
